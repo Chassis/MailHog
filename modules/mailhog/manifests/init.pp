@@ -1,5 +1,6 @@
 class mailhog (
 	$install_path = '/usr/local/src/mailhog',
+	$php          = $mailhog_config[php]
 ) {
 	file { [ $install_path, "$install_path/bin" ]:
 		ensure => directory,
