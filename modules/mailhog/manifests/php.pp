@@ -1,16 +1,18 @@
-class mailhog::php {
-	$vconfig = sz_load_config('/vagrant')
-	if versioncmp( "${$vconfig[php]}", '5.6') > -1 {
-		file { '/etc/php5/fpm/conf.d/mailhog.ini':
-			content => template('mailhog/php.ini.erb'),
-			notify  => Service['php5-fpm'],
-			require => Package['php5-fpm'],
-		}
-	} else {
-		file { '/etc/php/conf.d/mailhog.ini':
-			content => template('mailhog/php.ini.erb'),
-			notify  => Service['php5-fpm'],
-			require => Package['php5-fpm'],
-		}
-	}
+class mailhog::php (
+  $php = $mailhog_config[php]
+)
+{
+  if versioncmp( "${$php}", '5.4') <= 0 {
+    $php_package = 'php5'
+    $php_dir = 'php5'
+  }
+  else {
+    $php_package = "$php"
+    $php_dir = "php/$php"
+  }
+  file { "/etc/${php_dir}/fpm/conf.d/mailhog.ini":
+    content => template('mailhog/php.ini.erb'),
+    notify  => Service["php${php_package}-fpm"],
+    require => Package["php${php_package}-fpm"],
+  }
 }
