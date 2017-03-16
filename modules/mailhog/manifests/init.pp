@@ -23,8 +23,17 @@ class mailhog (
 		require => File[ "$install_path/bin/mailhog" ],
 	}
 
-	file { '/etc/init/mailhog.conf':
-		content => template('mailhog/upstart.conf.erb'),
+	if versioncmp($::operatingsystemmajrelease, '15.04') >= 0 {
+		file { "/lib/systemd/system/mailhog.service":
+			ensure => "file",
+			content => template("mailhog/systemd.service.erb"),
+		}
+		File['/lib/systemd/system/mailhog.service'] -> Service['mailhog']
+	} else {
+		file { '/etc/init/mailhog.conf':
+			content => template('mailhog/upstart.conf.erb'),
+		}
+		File['/etc/init/mailhog.conf'] -> Service['mailhog']
 	}
 
 	service { 'mailhog':
@@ -32,7 +41,7 @@ class mailhog (
 		ensure => running,
 		hasrestart => true,
 		hasstatus => true,
-		require => [ File['/etc/init/mailhog.conf'], File['/usr/bin/mailhog'] ]
+		require => [ File['/usr/bin/mailhog'] ]
 	}
 
 	if ! defined(Package['curl']) {
