@@ -7,8 +7,9 @@ class mailhog::php (
 		$php_dir = 'php5'
 	}
 	else {
-		$php_package = "$php"
-		$php_dir = "php/$php"
+	    $short_ver = regsubst($php, '^(\d+\.\d+)\.\d+$', '\1')
+		$php_package = "$short_ver"
+		$php_dir = "php/$short_ver"
 	}
 	file { "/etc/${php_dir}/fpm/conf.d/mailhog.ini":
 		content => template('mailhog/php.ini.erb'),
