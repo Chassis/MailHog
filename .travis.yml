@@ -4,4 +4,4 @@ install:
   - gem install puppet-lint
 
 script:
-  - puppet-lint --fail-on-warnings modules
+  - puppet-lint --fail-on-warnings --no-only_variable_string-check modules
