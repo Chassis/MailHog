@@ -8,7 +8,7 @@ class mailhog::php (
     $php_dir = 'php5'
   }
   else {
-      $short_ver = regsubst($php, '^(\d+\.\d+)\.\d+$', '\1')
+    $short_ver = regsubst("${php}", '^(\d+\.\d+)\.\d+$', '\1')
     $php_package = "${short_ver}"
     $php_dir = "php/${short_ver}"
   }
