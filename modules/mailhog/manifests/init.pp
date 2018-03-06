@@ -8,9 +8,7 @@ class mailhog (
 		ensure => directory,
 	}
 	exec { 'mailhog download':
-		command => "/usr/bin/curl -o ${install_path}
-			/bin/mailhog -L https://github.com/mailhog/MailHog/releases/download/v0.1.8/MailHog_linux_amd64"
-		,
+		command => "/usr/bin/curl -o ${install_path}/bin/mailhog -L https://github.com/mailhog/MailHog/releases/download/v0.1.8/MailHog_linux_amd64",
 		require => [ Package['curl'], File[ "${install_path}/bin" ] ],
 		creates => "${install_path}/bin/mailhog"
 	}
