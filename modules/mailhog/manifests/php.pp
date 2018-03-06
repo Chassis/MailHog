@@ -13,9 +13,17 @@ class mailhog::php (
 			$php_package = $short_ver
 			$php_dir = "php/${short_ver}"
 		}
-		file { "/etc/${php_dir}/fpm/conf.d/mailhog.ini":
-			content => template('mailhog/php.ini.erb'),
-			notify  => Service["php${php_package}-fpm"],
-			require => Package["php${php_package}-fpm"],
+		if ( ! empty( $::config[disabled_extensions] ) and 'chassis/mailhog' in $config[disabled_extensions] ) {
+			file { "/etc/${php_dir}/fpm/conf.d/mailhog.ini":
+				ensure => absent,
+				notify  => Service["php${php_package}-fpm"],
+				require => Package["php${php_package}-fpm"],
+			}
+		} else {
+			file { "/etc/${php_dir}/fpm/conf.d/mailhog.ini":
+				content => template('mailhog/php.ini.erb'),
+				notify  => Service["php${php_package}-fpm"],
+				require => Package["php${php_package}-fpm"],
+			}
 		}
 	}
