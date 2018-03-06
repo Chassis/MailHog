@@ -1,6 +1,7 @@
 # A Chassis extension to install and configure MailHog on your server
 class mailhog::php (
-	$php = $::mailhog_config[php]
+	$config,
+	$php = $config[php]
 )
 	{
 		if versioncmp($php, '5.4') <= 0 {
