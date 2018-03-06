@@ -15,7 +15,7 @@ class mailhog::php (
 		}
 		if ( ! empty( $::config[disabled_extensions] ) and 'chassis/mailhog' in $config[disabled_extensions] ) {
 			file { "/etc/${php_dir}/fpm/conf.d/mailhog.ini":
-				ensure => absent,
+				ensure  => absent,
 				notify  => Service["php${php_package}-fpm"],
 				require => Package["php${php_package}-fpm"],
 			}
