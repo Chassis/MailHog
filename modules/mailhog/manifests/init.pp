@@ -4,7 +4,7 @@ class mailhog (
 	$install_path = '/usr/local/src/mailhog',
 	$php          = $config[php]
 ) {
-	if ( ! empty( $::config[disabled_extensions] ) and 'chassis/mailhog' in $config[disabled_extensions] ) {
+	if ( ! empty( $config[disabled_extensions] ) and 'chassis/mailhog' in $config[disabled_extensions] ) {
 		service { 'mailhog':
 			ensure    => stopped,
 			enable    => false,
