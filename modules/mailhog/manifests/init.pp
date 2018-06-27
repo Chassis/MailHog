@@ -62,6 +62,11 @@ class mailhog (
 			hasstatus  => true,
 			require    => [ File['/usr/bin/mailhog'] ]
 		}
+
+		class { 'mailhog::php':
+			require => Class['mailhog'],
+			config  => $config
+		}
 	}
 
 	if !defined(Package['curl']) {
