@@ -9,8 +9,19 @@ access to them.
 
 <img src="http://i.imgur.com/5CqsgAI.png" />
 
-## Usage
-1. Add this extension to your extensions directory
+## Global Installation
+
+We recommend [installing this extension globally](http://docs.chassis.io/en/latest/extend/#globally-installing-extensions) to make it available on every Chassis box.
+
+```
+git clone https://github.com/Chassis/MailHog ~/.chassis/extensions/mailhog
+```
+## Project Installation
+1. Add this extension to your extensions directory `git clone git@github.com:Chassis/MailHog.git extensions/mailhog` or alternatively add the following to one of your [`.yaml`](https://github.com/Chassis/Chassis/blob/master/config.yaml) files:
+   ```
+   extensions:
+     - chassis/mailhog
+   ```
 2. Run `vagrant provision`
 3. Go to http://vagrant.local:8025/ to view your MailHog inbox.
 
