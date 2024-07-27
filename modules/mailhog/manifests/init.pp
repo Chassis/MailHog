@@ -24,10 +24,20 @@ class mailhog (
 		file { [ $install_path, "${install_path}/bin" ]:
 			ensure => directory,
 		}
-		exec { 'mailhog download':
-			command => "/usr/bin/curl -o ${install_path}/bin/mailhog -L https://github.com/mailhog/MailHog/releases/download/v1.0.1/MailHog_linux_amd64",
-			require => [ Package['curl'], File[ "${install_path}/bin" ] ],
-			creates => "${install_path}/bin/mailhog"
+		# Detect if we need to install the ARM64 version of MailHog
+		$arch = $facts['os']['architecture']
+			if ( $arch == 'aarch64') {
+				exec { 'mailhog download':
+					command => "/usr/bin/curl -o ${install_path}/bin/mailhog -L https://github.com/jcalonso/MailHog/releases/download/v1.0.1-arm/MailHog.linux.arm64",
+					require => [ Package['curl'], File[ "${install_path}/bin" ] ],
+					creates => "${install_path}/bin/mailhog"
+				}
+			} else {
+				exec { 'mailhog download':
+					command => "/usr/bin/curl -o ${install_path}/bin/mailhog -L https://github.com/mailhog/MailHog/releases/download/v1.0.1/MailHog_linux_amd64",
+					require => [ Package['curl'], File[ "${install_path}/bin" ] ],
+					creates => "${install_path}/bin/mailhog"
+				}
 		}
 
 		file { "${install_path}/bin/mailhog":
