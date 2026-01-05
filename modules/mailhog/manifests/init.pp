@@ -52,7 +52,7 @@ class mailhog (
 			require => File[ "${install_path}/bin/mailhog" ],
 		}
 
-		if versioncmp($::operatingsystemmajrelease, '15.04') >= 0 {
+		if versioncmp($facts['os']['distro']['release']['full'], '15.04') >= 0 {
 			file { '/lib/systemd/system/mailhog.service':
 				ensure  => 'file',
 				content => template('mailhog/systemd.service.erb'),
